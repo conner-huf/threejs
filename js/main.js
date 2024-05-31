@@ -15,6 +15,7 @@ loader.load(
     `./models/${objToRender}/scene.gltf`,
     function (gltf) {
         object = gltf.scene;
+        object.position.y = -0.3;
         scene.add(object);
     },
     function (xhr){
@@ -31,35 +32,31 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.getElementById("container3D").appendChild(renderer.domElement);
 
 if (objToRender === 'guitar') {
-    camera.position.z = 1.5;
+    camera.position.x = -0.5;
+    camera.position.y = 0;
+    camera.position.z = 1;
 } else if (objToRender === 'sirFrog') {
     camera.position.z = 2.5;
 } else {
     camera.position.z = 5;
 }
 
-const topLight = new THREE.DirectionalLight(0xffffff, 1);
-const backLight = new THREE.DirectionalLight(0xffffff, 2);
-const goundLight = new THREE.DirectionalLight(0xffffff, 3);
-
-backLight.position.set(-1, -5, -1);
-goundLight.position.set(-1, -5, -5);
-
-if (objToRender === 'sirFrog') {
-    topLight.position.set(1, 1, 1);
-} else {
-    topLight.position.set(500, 500, 500);
-}
-
+const topLight = new THREE.DirectionalLight(0xFFFFFF, 1);
+topLight.position.set(1, 1, 1);
 topLight.castShadow = true;
-backLight.castShadow = true;
-goundLight.castShadow = true;
-
 scene.add(topLight);
-scene.add(backLight);
-scene.add(goundLight);
 
-const ambientLight = new THREE.AmbientLight(0x333333, 5);
+const pointLight = new THREE.DirectionalLight(0x00FFEC, 2);
+pointLight.position.set(-2, 2, 1);
+pointLight.castShadow = true;
+scene.add(pointLight);
+
+const groundLight = new THREE.DirectionalLight(0xFF5A18, 0.05);
+groundLight.position.set(6, -1.5, -0.5);
+groundLight.castShadow = true;
+scene.add(groundLight);
+
+const ambientLight = new THREE.AmbientLight(0x3E3E3E, 0.75);
 scene.add(ambientLight);
 
 controls = new OrbitControls(camera, renderer.domElement);
